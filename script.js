@@ -44,6 +44,33 @@ const stagePoints = document.getElementById("stage-points");
 const waveformCanvas = document.getElementById("waveform");
 const parallaxElements = document.querySelectorAll(".parallax-element");
 
+const floatingImageMotion = Array.from(parallaxElements).map((element, index) => ({
+  element,
+  angle: (Math.random() * 12) - 6,
+  x: 0,
+  y: 0,
+  targetX: 0,
+  targetY: 0,
+  speedX: 0,
+  speedY: 0,
+  index
+}));
+
+function gaussianRandom(mean = 0, standardDeviation = 1) {
+  let u = 0;
+  let v = 0;
+  while (u === 0) u = Math.random();
+  while (v === 0) v = Math.random();
+  return mean + standardDeviation * Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+}
+
+function chooseFloatingDirection(motion) {
+  motion.targetX += gaussianRandom(0, 18);
+  motion.targetY += gaussianRandom(0, 18);
+}
+
+floatingImageMotion.forEach((motion) => chooseFloatingDirection(motion));
+
 let audioContext = null;
 let analyser = null;
 let masterGain = null;
@@ -254,10 +281,27 @@ function updateSliderPosition() {
 
 function updateParallax() {
   const scrollY = window.scrollY || 0;
-  parallaxElements.forEach((element, index) => {
+  floatingImageMotion.forEach((motion, index) => {
     const speed = index === 0 ? 0.045 : -0.035;
-    element.style.transform = `translate3d(0, ${scrollY * speed}px, 0)`;
+    motion.element.style.transform = `translate3d(${motion.x}px, ${scrollY * speed + motion.y}px, 0) rotate(${motion.angle}deg)`;
   });
+}
+
+function updateFloatingImageMotion() {
+  floatingImageMotion.forEach((motion) => {
+    if (!isPlaying) return;
+
+    if (Math.abs(motion.targetX - motion.x) < 2 && Math.abs(motion.targetY - motion.y) < 2) {
+      chooseFloatingDirection(motion);
+    }
+
+    motion.x += (motion.targetX - motion.x) * 0.0025;
+    motion.y += (motion.targetY - motion.y) * 0.0025;
+    motion.angle += gaussianRandom(0, 0.006);
+    motion.angle = Math.max(-8, Math.min(8, motion.angle));
+  });
+
+  updateParallax();
 }
 
 function bindEvents() {
@@ -359,6 +403,7 @@ function animationLoop() {
   updatePlaybackReadout();
 
   drawWaveform();
+  updateFloatingImageMotion();
 
   animationFrame = requestAnimationFrame(animationLoop);
 }
