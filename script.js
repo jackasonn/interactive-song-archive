@@ -43,6 +43,7 @@ const durationText = document.getElementById("duration");
 const stagePoints = document.getElementById("stage-points");
 const waveformCanvas = document.getElementById("waveform");
 const artwork = document.querySelector(".album-art");
+const parallaxElements = document.querySelectorAll(".parallax-element");
 
 let audioContext = null;
 let analyser = null;
@@ -252,6 +253,17 @@ function updateSliderPosition() {
   targetPosition = Number.parseFloat(slider.value);
 }
 
+function updateParallax() {
+  const scrollY = window.scrollY || 0;
+  parallaxElements.forEach((element, index) => {
+    const speed = index === 0 ? 0.045 : -0.035;
+    element.style.transform = `translate3d(0, ${scrollY * speed}px, 0)`;
+  });
+  if (artwork) {
+    artwork.style.transform = `translate3d(0, ${scrollY * -0.018}px, 0)`;
+  }
+}
+
 function bindEvents() {
   slider.addEventListener("input", () => {
     updateSliderPosition();
@@ -270,6 +282,8 @@ function bindEvents() {
   });
 
   window.addEventListener("resize", resizeWaveformCanvas);
+  window.addEventListener("scroll", updateParallax, { passive: true });
+  updateParallax();
 }
 
 function resizeWaveformCanvas() {
