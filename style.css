@@ -12,7 +12,7 @@ body { min-height:100%; margin:0; background:var(--purple); color:var(--yellow);
 button,input { font:inherit; }
 button:focus-visible,input:focus-visible { outline:2px solid var(--aqua); outline-offset:5px; }
 
-.site-shell { width:min(var(--content-width),100%); min-height:100svh; margin:0 auto; padding:28px var(--side-padding) 40px; display:flex; flex-direction:column; gap:34px; }
+.site-shell { width:min(var(--content-width),100%); min-height:100svh; margin:0 auto; padding:28px var(--side-padding) 40px; display:flex; flex-direction:column; gap:24px; }
 .site-header { display:none; }
 .site-header,.site-footer { display:flex; align-items:center; justify-content:space-between; gap:20px; }
 .site-header { display:none; }
@@ -38,7 +38,7 @@ h2 { margin:9px 0 5px; color:var(--yellow); font-size:clamp(17px,1.7vw,22px); li
 .button-indicator { width:6px; height:6px; display:inline-block; border:1px solid currentColor; border-radius:50%; }
 .status { min-height:15px; margin-top:9px; font-size:9px; letter-spacing:.12em; }
 
-.timeline-section { padding-top:8px; }
+.timeline-section { padding-top:0; transform:translateY(-18px); }
 .timeline-heading { display:flex; justify-content:space-between; align-items:flex-end; gap:24px; margin-bottom:10px; }
 .timeline-help { margin-top:7px; letter-spacing:.02em; text-transform:none; font-size:12px; }
 .time-readout { white-space:nowrap; letter-spacing:.1em; color:var(--yellow); }
@@ -53,7 +53,7 @@ h2 { margin:9px 0 5px; color:var(--yellow); font-size:clamp(17px,1.7vw,22px); li
 .stage-point { width:7px; height:7px; border-radius:50%; background:rgba(143,217,210,.18); border:1px solid rgba(143,217,210,.65); }
 .stage-point.active { width:10px; height:10px; background:var(--pink); border-color:var(--pink); }
 
-.waveform-section { padding:12px 0; }
+.waveform-section { padding:0 0 12px; margin-top:-18px; }
 #waveform { display:block; width:100%; height:clamp(74px,8vw,100px); }
 
 .about-section { margin-left:calc(var(--side-padding) * -1); margin-right:calc(var(--side-padding) * -1); padding:clamp(64px,9vw,110px) var(--side-padding); display:grid; grid-template-columns:minmax(220px,.7fr) minmax(320px,1.3fr); gap:clamp(40px,8vw,120px); background:var(--purple); color:var(--yellow); }
