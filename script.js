@@ -482,8 +482,6 @@ function animationLoop() {
 async function initialise() {
   createStagePoints();
   bindEvents();
-  floatingImageMotion.forEach((motion) => updateFloatingBounds(motion));
-  floatingImageMotion.forEach((motion) => chooseFloatingDirection(motion));
   updateVersionInfo();
   resizeWaveformCanvas();
   drawWaveform();
