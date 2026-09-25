@@ -72,8 +72,8 @@ h2 { margin:9px 0 5px; color:var(--yellow); font-size:clamp(17px,1.7vw,22px); li
 .artwork-failed { display:grid; place-items:center; border:1px solid rgba(245,231,168,.38); }
 .artwork-failed::after { content:"ALBUM ART UNAVAILABLE"; color:var(--aqua); font-size:9px; letter-spacing:.14em; }
 
-.floating-images { position:absolute; inset:0; z-index:0; pointer-events:none; overflow:visible; }
-.floating-image { position:absolute; z-index:0; width:clamp(62px,6vw,88px); height:auto; max-width:88px; border-radius:10px; box-shadow:0 14px 30px rgba(0,0,0,.18); opacity:.88; }
+.floating-images { position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden; }
+.floating-image { position:absolute; z-index:0; width:clamp(62px,6vw,88px); height:auto; max-width:88px; border-radius:10px; filter:drop-shadow(0 14px 18px rgba(0,0,0,.18)); opacity:.88; }
 .floating-image-01 { left:clamp(-150px,-11vw,-85px); top:10%; }
 .floating-image-02 { right:clamp(-150px,-11vw,-85px); top:16%; }
 .floating-image-03 { left:clamp(-175px,-13vw,-105px); top:46%; }
