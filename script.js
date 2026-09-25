@@ -1,35 +1,65 @@
-const versions = [
-  {
-    file: "assets/audio/version-01.mp3",
-    title: "The Original Instrumental",
-    description: "The first recorded version of the song.",
-    date: "01 — DEMO"
+const song = {
+  id: "come-what-may-tomorrow",
+  title: "Come What May Tomorrow",
+  artist: "Jackson Moore",
+  albumArt: "assets/images/album-art.jpg",
+  floatingImages: [
+    "assets/images/come-what-may-tomorrow-01.png",
+    "assets/images/come-what-may-tomorrow-02.png"
+  ],
+  colours: {
+    purple: "#3f3148",
+    yellow: "#f5e7a8",
+    pink: "#e98f91",
+    aqua: "#8fd9d2"
   },
-  {
-    file: "assets/audio/version-02.mp3",
-    title: "Vocal Take with Rough Mix",
-    description: "Added lyrics with a rough revision of the instrumental mix.",
-    date: "02 — ROUGH MIX"
+  aboutHeading: "An archive of progress.",
+  aboutParagraphs: [
+    "<em>Come What May Tomorrow</em> is a song about moving forward without knowing exactly what tomorrow will bring. This archive documents the song as it changed from an early instrumental idea into the finished recording.",
+    "Rather than presenting only the final version, the website lets you move through five stages of the song and hear how its instrumentation, vocals, recordings and mix developed over time. The process itself becomes part of the finished piece.",
+    "This connects to the theme of <strong>Upkeep</strong>: things we make are rarely finished once and left untouched. They are maintained, revised, repaired and cared for. Here, upkeep becomes musical — each version is a record of attention, change and the small decisions that gradually shape a song."
+  ],
+  links: {
+    spotify: "https://open.spotify.com/artist/7njkLldCadYfsRvvedCBV6",
+    appleMusic: "https://music.apple.com/au/artist/jackson-moore/6800161995"
   },
-  {
-    file: "assets/audio/version-03.mp3",
-    title: "Revision",
-    description: "New instrumentation and vocal takes with more mix experimentation.",
-    date: "03 — REVISED MIX"
-  },
-  {
-    file: "assets/audio/version-04.mp3",
-    title: "New Recordings",
-    description: "The song begins to resemble its final form, with finalised takes.",
-    date: "04 — FINAL TAKES"
-  },
-  {
-    file: "assets/audio/version-05.mp3",
-    title: "Final Mix",
-    description: "The completed version of the song, as released on platforms.",
-    date: "05 — FINAL"
-  }
-];
+  versions: [
+    { file: "assets/audio/version-01.mp3", title: "The Original Instrumental", description: "The first recorded version of the song.", date: "01 — DEMO" },
+    { file: "assets/audio/version-02.mp3", title: "Vocal Take with Rough Mix", description: "Added lyrics with a rough revision of the instrumental mix.", date: "02 — ROUGH MIX" },
+    { file: "assets/audio/version-03.mp3", title: "Revision", description: "New instrumentation and vocal takes with more mix experimentation.", date: "03 — REVISED MIX" },
+    { file: "assets/audio/version-04.mp3", title: "New Recordings", description: "The song begins to resemble its final form, with finalised takes.", date: "04 — FINAL TAKES" },
+    { file: "assets/audio/version-05.mp3", title: "Final Mix", description: "The completed version of the song, as released on platforms.", date: "05 — FINAL" }
+  ]
+};
+
+const versions = song.versions;
+
+function applySongConfig() {
+  document.documentElement.style.setProperty("--purple", song.colours.purple);
+  document.documentElement.style.setProperty("--yellow", song.colours.yellow);
+  document.documentElement.style.setProperty("--pink", song.colours.pink);
+  document.documentElement.style.setProperty("--aqua", song.colours.aqua);
+
+  document.title = `Interactive Song Archive — ${song.title}`;
+  document.querySelector('meta[name="description"]').content = `An interactive archive showing the evolution of ${song.title}.`;
+  document.querySelector('meta[name="theme-color"]').content = song.colours.purple;
+
+  document.getElementById("song-title").textContent = song.title;
+  document.getElementById("artist-kicker").textContent = `A song by ${song.artist}.`;
+  document.getElementById("about-title").innerHTML = `<em>${song.aboutHeading}</em>`;
+  document.querySelector(".about-copy").innerHTML = song.aboutParagraphs.map((paragraph) => `<p>${paragraph}</p>`).join("");
+  document.querySelector(".album-art").src = song.albumArt;
+  document.querySelector(".album-art").alt = `Album artwork for ${song.title}`;
+  document.querySelector(".footer-song-name").textContent = song.title;
+  document.querySelector('.footer-links a[href*="spotify"]').href = song.links.spotify;
+  document.querySelector('.footer-links a[href*="music.apple"]').href = song.links.appleMusic;
+
+  document.querySelectorAll(".floating-image").forEach((image, index) => {
+    image.src = song.floatingImages[index % song.floatingImages.length];
+  });
+}
+
+applySongConfig();
 
 const slider = document.getElementById("version-slider");
 const playButton = document.getElementById("play-button");
@@ -51,8 +81,10 @@ const floatingImageMotion = Array.from(parallaxElements).map((element, index) =>
   y: 0,
   targetX: 0,
   targetY: 0,
-  speedX: 0,
-  speedY: 0,
+  minX: -70,
+  maxX: 70,
+  minY: -55,
+  maxY: 55,
   index
 }));
 
@@ -65,8 +97,8 @@ function gaussianRandom(mean = 0, standardDeviation = 1) {
 }
 
 function chooseFloatingDirection(motion) {
-  motion.targetX += gaussianRandom(0, 42);
-  motion.targetY += gaussianRandom(0, 42);
+  motion.targetX = Math.max(motion.minX, Math.min(motion.maxX, motion.x + gaussianRandom(0, 42)));
+  motion.targetY = Math.max(motion.minY, Math.min(motion.maxY, motion.y + gaussianRandom(0, 42)));
 }
 
 floatingImageMotion.forEach((motion) => chooseFloatingDirection(motion));
@@ -297,6 +329,17 @@ function updateFloatingImageMotion() {
 
     motion.x += (motion.targetX - motion.x) * 0.006;
     motion.y += (motion.targetY - motion.y) * 0.006;
+
+    if (motion.x <= motion.minX || motion.x >= motion.maxX) {
+      motion.x = Math.max(motion.minX, Math.min(motion.maxX, motion.x));
+      chooseFloatingDirection(motion);
+    }
+
+    if (motion.y <= motion.minY || motion.y >= motion.maxY) {
+      motion.y = Math.max(motion.minY, Math.min(motion.maxY, motion.y));
+      chooseFloatingDirection(motion);
+    }
+
     motion.angle += gaussianRandom(0, 0.018);
     motion.angle = Math.max(-12, Math.min(12, motion.angle));
   });
