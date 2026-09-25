@@ -77,16 +77,14 @@ const parallaxElements = document.querySelectorAll(".parallax-element");
 
 const floatingImageMotion = Array.from(parallaxElements).map((element, index) => ({
   element,
-  angle: 0,
-  targetAngle: 0,
-  x: 0,
-  y: 0,
-  targetX: 0,
-  targetY: 0,
-  minX: -70,
-  maxX: 70,
-  minY: -55,
-  maxY: 55,
+  angle: gaussianRandom(0, 3),
+  x: gaussianRandom(0, 20),
+  y: gaussianRandom(0, 18),
+  velocityX: gaussianRandom(0, 0.1),
+  velocityY: gaussianRandom(0, 0.08),
+  targetVelocityX: 0,
+  targetVelocityY: 0,
+  steeringFrames: 0,
   index
 }));
 
@@ -98,44 +96,23 @@ function gaussianRandom(mean = 0, standardDeviation = 1) {
   return mean + standardDeviation * Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
 }
 
-function updateFloatingBounds(motion, randomisePosition = false) {
-  const rect = motion.element.getBoundingClientRect();
+function chooseFloatingVector(motion) {
+  const directionX = gaussianRandom(0, 1);
+  const directionY = gaussianRandom(0, 1);
+  const magnitude = 0.07 + Math.abs(gaussianRandom(0, 0.055));
 
-  motion.minX = -rect.left;
-  motion.maxX = window.innerWidth - rect.right;
-  motion.minY = -rect.top;
-  motion.maxY = window.innerHeight - rect.bottom;
+  motion.targetVelocityX = directionX * magnitude;
+  motion.targetVelocityY = directionY * magnitude;
+  motion.steeringFrames = 120 + Math.floor(Math.random() * 180);
 
-  if (randomisePosition) {
-    motion.x = motion.minX + Math.random() * (motion.maxX - motion.minX);
-    motion.y = motion.minY + Math.random() * (motion.maxY - motion.minY);
-  } else {
-    motion.x = Math.max(motion.minX, Math.min(motion.maxX, motion.x));
-    motion.y = Math.max(motion.minY, Math.min(motion.maxY, motion.y));
-  }
-}
-
-function chooseFloatingDirection(motion) {
-  let deltaX = gaussianRandom(0, 110);
-  let deltaY = gaussianRandom(0, 110);
-
-  if (motion.x <= motion.minX + 1) deltaX = Math.abs(deltaX);
-  if (motion.x >= motion.maxX - 1) deltaX = -Math.abs(deltaX);
-  if (motion.y <= motion.minY + 1) deltaY = Math.abs(deltaY);
-  if (motion.y >= motion.maxY - 1) deltaY = -Math.abs(deltaY);
-
-  motion.targetX = Math.max(motion.minX, Math.min(motion.maxX, motion.x + deltaX));
-  motion.targetY = Math.max(motion.minY, Math.min(motion.maxY, motion.y + deltaY));
-  motion.targetAngle = Math.max(-10, Math.min(10, motion.angle + gaussianRandom(0, 2.2)));
+  motion.targetAngle = Math.max(
+    -10,
+    Math.min(10, motion.angle + gaussianRandom(0, 2))
+  );
 }
 
 floatingImageMotion.forEach((motion) => {
-  motion.angle = gaussianRandom(0, 3);
-  motion.targetAngle = motion.angle;
-});
-window.addEventListener("resize", () => {
-  floatingImageMotion.forEach((motion) => updateFloatingBounds(motion, true));
-  floatingImageMotion.forEach((motion) => chooseFloatingDirection(motion));
+  chooseFloatingVector(motion);
 });
 
 let audioContext = null;
@@ -347,8 +324,12 @@ function updateSliderPosition() {
 }
 
 function updateParallax() {
-  floatingImageMotion.forEach((motion) => {
-    motion.element.style.transform = `translate3d(${motion.x}px, ${motion.y}px, 0) rotate(${motion.angle}deg)`;
+  const scrollY = window.scrollY || 0;
+
+  floatingImageMotion.forEach((motion, index) => {
+    const speed = index % 2 === 0 ? 0.045 : -0.035;
+    motion.element.style.transform =
+      `translate3d(${motion.x}px, ${scrollY * speed + motion.y}px, 0) rotate(${motion.angle}deg)`;
   });
 }
 
@@ -356,30 +337,38 @@ function updateFloatingImageMotion() {
   floatingImageMotion.forEach((motion) => {
     if (!isPlaying) return;
 
-    if (Math.abs(motion.targetX - motion.x) < 2 && Math.abs(motion.targetY - motion.y) < 2) {
-      chooseFloatingDirection(motion);
+    if (motion.steeringFrames <= 0) {
+      chooseFloatingVector(motion);
     }
 
-    motion.x += (motion.targetX - motion.x) * 0.004;
-    motion.y += (motion.targetY - motion.y) * 0.004;
-    motion.angle += (motion.targetAngle - motion.angle) * 0.015;
+    motion.velocityX += (motion.targetVelocityX - motion.velocityX) * 0.012;
+    motion.velocityY += (motion.targetVelocityY - motion.velocityY) * 0.012;
 
-    if (motion.x <= motion.minX || motion.x >= motion.maxX) {
-      motion.x = Math.max(motion.minX, Math.min(motion.maxX, motion.x));
-      chooseFloatingDirection(motion);
+    motion.x += motion.velocityX;
+    motion.y += motion.velocityY;
+
+    // Keep the drift local to each image's original area so the movement
+    // feels like a gentle vector field rather than a point-to-point animation.
+    motion.x *= 0.999;
+    motion.y *= 0.999;
+
+    motion.angle += (motion.targetAngle - motion.angle) * 0.01;
+
+    motion.steeringFrames -= 1;
+
+    if (Math.abs(motion.targetAngle - motion.angle) < 0.08) {
+      motion.targetAngle = Math.max(
+        -10,
+        Math.min(10, motion.angle + gaussianRandom(0, 1.8))
+      );
     }
 
-    if (motion.y <= motion.minY || motion.y >= motion.maxY) {
-      motion.y = Math.max(motion.minY, Math.min(motion.maxY, motion.y));
-      chooseFloatingDirection(motion);
+    if (Math.abs(motion.x) > 95) {
+      motion.targetVelocityX = -Math.sign(motion.x) * (0.08 + Math.random() * 0.08);
     }
 
-    if (Math.abs(motion.targetX - motion.x) < 2 && Math.abs(motion.targetY - motion.y) < 2) {
-      chooseFloatingDirection(motion);
-    }
-
-    if (Math.abs(motion.targetAngle - motion.angle) < 0.1) {
-      motion.targetAngle = Math.max(-10, Math.min(10, motion.angle + gaussianRandom(0, 2.2)));
+    if (Math.abs(motion.y) > 80) {
+      motion.targetVelocityY = -Math.sign(motion.y) * (0.06 + Math.random() * 0.06);
     }
   });
 
