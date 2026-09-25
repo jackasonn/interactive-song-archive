@@ -76,7 +76,8 @@ const parallaxElements = document.querySelectorAll(".parallax-element");
 
 const floatingImageMotion = Array.from(parallaxElements).map((element, index) => ({
   element,
-  angle: (Math.random() * 12) - 6,
+  angle: 0,
+  targetAngle: 0,
   x: 0,
   y: 0,
   targetX: 0,
@@ -96,12 +97,32 @@ function gaussianRandom(mean = 0, standardDeviation = 1) {
   return mean + standardDeviation * Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
 }
 
-function chooseFloatingDirection(motion) {
-  motion.targetX = Math.max(motion.minX, Math.min(motion.maxX, motion.x + gaussianRandom(0, 42)));
-  motion.targetY = Math.max(motion.minY, Math.min(motion.maxY, motion.y + gaussianRandom(0, 42)));
+function updateFloatingBounds(motion) {
+  const rect = motion.element.getBoundingClientRect();
+
+  motion.minX = -rect.left;
+  motion.maxX = window.innerWidth - rect.right;
+  motion.minY = -rect.top;
+  motion.maxY = window.innerHeight - rect.bottom;
+
+  motion.x = Math.max(motion.minX, Math.min(motion.maxX, motion.x));
+  motion.y = Math.max(motion.minY, Math.min(motion.maxY, motion.y));
 }
 
-floatingImageMotion.forEach((motion) => chooseFloatingDirection(motion));
+function chooseFloatingDirection(motion) {
+  motion.targetX = Math.max(motion.minX, Math.min(motion.maxX, motion.x + gaussianRandom(0, 110)));
+  motion.targetY = Math.max(motion.minY, Math.min(motion.maxY, motion.y + gaussianRandom(0, 110)));
+  motion.targetAngle = Math.max(-10, Math.min(10, motion.angle + gaussianRandom(0, 2.2)));
+}
+
+floatingImageMotion.forEach((motion) => {
+  motion.angle = gaussianRandom(0, 3);
+  motion.targetAngle = motion.angle;
+});
+window.addEventListener("resize", () => {
+  floatingImageMotion.forEach((motion) => updateFloatingBounds(motion));
+  floatingImageMotion.forEach((motion) => chooseFloatingDirection(motion));
+});
 
 let audioContext = null;
 let analyser = null;
@@ -312,10 +333,8 @@ function updateSliderPosition() {
 }
 
 function updateParallax() {
-  const scrollY = window.scrollY || 0;
-  floatingImageMotion.forEach((motion, index) => {
-    const speed = index === 0 ? 0.045 : -0.035;
-    motion.element.style.transform = `translate3d(${motion.x}px, ${scrollY * speed + motion.y}px, 0) rotate(${motion.angle}deg)`;
+  floatingImageMotion.forEach((motion) => {
+    motion.element.style.transform = `translate3d(${motion.x}px, ${motion.y}px, 0) rotate(${motion.angle}deg)`;
   });
 }
 
@@ -327,8 +346,9 @@ function updateFloatingImageMotion() {
       chooseFloatingDirection(motion);
     }
 
-    motion.x += (motion.targetX - motion.x) * 0.006;
-    motion.y += (motion.targetY - motion.y) * 0.006;
+    motion.x += (motion.targetX - motion.x) * 0.004;
+    motion.y += (motion.targetY - motion.y) * 0.004;
+    motion.angle += (motion.targetAngle - motion.angle) * 0.015;
 
     if (motion.x <= motion.minX || motion.x >= motion.maxX) {
       motion.x = Math.max(motion.minX, Math.min(motion.maxX, motion.x));
@@ -340,8 +360,13 @@ function updateFloatingImageMotion() {
       chooseFloatingDirection(motion);
     }
 
-    motion.angle += gaussianRandom(0, 0.018);
-    motion.angle = Math.max(-12, Math.min(12, motion.angle));
+    if (Math.abs(motion.targetX - motion.x) < 2 && Math.abs(motion.targetY - motion.y) < 2) {
+      chooseFloatingDirection(motion);
+    }
+
+    if (Math.abs(motion.targetAngle - motion.angle) < 0.1) {
+      motion.targetAngle = Math.max(-10, Math.min(10, motion.angle + gaussianRandom(0, 2.2)));
+    }
   });
 
   updateParallax();
@@ -454,6 +479,8 @@ function animationLoop() {
 async function initialise() {
   createStagePoints();
   bindEvents();
+  floatingImageMotion.forEach((motion) => updateFloatingBounds(motion));
+  floatingImageMotion.forEach((motion) => chooseFloatingDirection(motion));
   updateVersionInfo();
   resizeWaveformCanvas();
   drawWaveform();
