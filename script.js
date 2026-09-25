@@ -110,8 +110,16 @@ function updateFloatingBounds(motion) {
 }
 
 function chooseFloatingDirection(motion) {
-  motion.targetX = Math.max(motion.minX, Math.min(motion.maxX, motion.x + gaussianRandom(0, 110)));
-  motion.targetY = Math.max(motion.minY, Math.min(motion.maxY, motion.y + gaussianRandom(0, 110)));
+  let deltaX = gaussianRandom(0, 110);
+  let deltaY = gaussianRandom(0, 110);
+
+  if (motion.x <= motion.minX + 1) deltaX = Math.abs(deltaX);
+  if (motion.x >= motion.maxX - 1) deltaX = -Math.abs(deltaX);
+  if (motion.y <= motion.minY + 1) deltaY = Math.abs(deltaY);
+  if (motion.y >= motion.maxY - 1) deltaY = -Math.abs(deltaY);
+
+  motion.targetX = Math.max(motion.minX, Math.min(motion.maxX, motion.x + deltaX));
+  motion.targetY = Math.max(motion.minY, Math.min(motion.maxY, motion.y + deltaY));
   motion.targetAngle = Math.max(-10, Math.min(10, motion.angle + gaussianRandom(0, 2.2)));
 }
 
