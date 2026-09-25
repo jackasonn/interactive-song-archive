@@ -54,8 +54,9 @@ function applySongConfig() {
   document.querySelector('.footer-links a[href*="spotify"]').href = song.links.spotify;
   document.querySelector('.footer-links a[href*="music.apple"]').href = song.links.appleMusic;
 
-  document.querySelectorAll(".floating-image").forEach((image, index) => {
-    image.src = song.floatingImages[index % song.floatingImages.length];
+  document.querySelectorAll(".floating-image").forEach((image) => {
+    const randomImageIndex = Math.floor(Math.random() * song.floatingImages.length);
+    image.src = song.floatingImages[randomImageIndex];
   });
 }
 
@@ -97,7 +98,7 @@ function gaussianRandom(mean = 0, standardDeviation = 1) {
   return mean + standardDeviation * Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
 }
 
-function updateFloatingBounds(motion) {
+function updateFloatingBounds(motion, randomisePosition = false) {
   const rect = motion.element.getBoundingClientRect();
 
   motion.minX = -rect.left;
@@ -105,8 +106,13 @@ function updateFloatingBounds(motion) {
   motion.minY = -rect.top;
   motion.maxY = window.innerHeight - rect.bottom;
 
-  motion.x = Math.max(motion.minX, Math.min(motion.maxX, motion.x));
-  motion.y = Math.max(motion.minY, Math.min(motion.maxY, motion.y));
+  if (randomisePosition) {
+    motion.x = motion.minX + Math.random() * (motion.maxX - motion.minX);
+    motion.y = motion.minY + Math.random() * (motion.maxY - motion.minY);
+  } else {
+    motion.x = Math.max(motion.minX, Math.min(motion.maxX, motion.x));
+    motion.y = Math.max(motion.minY, Math.min(motion.maxY, motion.y));
+  }
 }
 
 function chooseFloatingDirection(motion) {
@@ -128,7 +134,7 @@ floatingImageMotion.forEach((motion) => {
   motion.targetAngle = motion.angle;
 });
 window.addEventListener("resize", () => {
-  floatingImageMotion.forEach((motion) => updateFloatingBounds(motion));
+  floatingImageMotion.forEach((motion) => updateFloatingBounds(motion, true));
   floatingImageMotion.forEach((motion) => chooseFloatingDirection(motion));
 });
 
