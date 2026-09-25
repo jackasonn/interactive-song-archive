@@ -12,7 +12,7 @@ body { min-height:100%; margin:0; background:var(--purple); color:var(--yellow);
 button,input { font:inherit; }
 button:focus-visible,input:focus-visible { outline:2px solid var(--aqua); outline-offset:5px; }
 
-.site-shell { width:min(var(--content-width),100%); min-height:100svh; margin:0 auto; padding:28px var(--side-padding) 40px; display:flex; flex-direction:column; gap:24px; }
+.site-shell { width:min(var(--content-width),100%); min-height:100svh; margin:0 auto; padding:14px var(--side-padding) 40px; display:flex; flex-direction:column; gap:24px; }
 .site-header { display:none; }
 .site-header,.site-footer { display:flex; align-items:center; justify-content:space-between; gap:20px; }
 .site-header { display:none; }
