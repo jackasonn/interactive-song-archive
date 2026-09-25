@@ -40,6 +40,7 @@ h2 { margin:9px 0 5px; color:var(--yellow); font-size:clamp(17px,1.7vw,22px); li
 
 .timeline-section { padding-top:0; transform:translateY(-18px); }
 .timeline-heading { display:flex; justify-content:space-between; align-items:flex-end; gap:24px; margin-bottom:10px; }
+.timeline-heading > div { transform:translateY(-6px); }
 .timeline-help { margin-top:7px; letter-spacing:.02em; text-transform:none; font-size:12px; }
 .time-readout { white-space:nowrap; letter-spacing:.1em; color:var(--yellow); }
 .timeline-control { position:relative; padding:0 4px; }
