@@ -65,8 +65,8 @@ function gaussianRandom(mean = 0, standardDeviation = 1) {
 }
 
 function chooseFloatingDirection(motion) {
-  motion.targetX += gaussianRandom(0, 18);
-  motion.targetY += gaussianRandom(0, 18);
+  motion.targetX += gaussianRandom(0, 42);
+  motion.targetY += gaussianRandom(0, 42);
 }
 
 floatingImageMotion.forEach((motion) => chooseFloatingDirection(motion));
@@ -295,10 +295,10 @@ function updateFloatingImageMotion() {
       chooseFloatingDirection(motion);
     }
 
-    motion.x += (motion.targetX - motion.x) * 0.0025;
-    motion.y += (motion.targetY - motion.y) * 0.0025;
-    motion.angle += gaussianRandom(0, 0.006);
-    motion.angle = Math.max(-8, Math.min(8, motion.angle));
+    motion.x += (motion.targetX - motion.x) * 0.006;
+    motion.y += (motion.targetY - motion.y) * 0.006;
+    motion.angle += gaussianRandom(0, 0.018);
+    motion.angle = Math.max(-12, Math.min(12, motion.angle));
   });
 
   updateParallax();
