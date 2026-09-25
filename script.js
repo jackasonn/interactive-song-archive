@@ -42,7 +42,6 @@ const currentTimeText = document.getElementById("current-time");
 const durationText = document.getElementById("duration");
 const stagePoints = document.getElementById("stage-points");
 const waveformCanvas = document.getElementById("waveform");
-const artwork = document.querySelector(".album-art");
 const parallaxElements = document.querySelectorAll(".parallax-element");
 
 let audioContext = null;
@@ -259,9 +258,6 @@ function updateParallax() {
     const speed = index === 0 ? 0.045 : -0.035;
     element.style.transform = `translate3d(0, ${scrollY * speed}px, 0)`;
   });
-  if (artwork) {
-    artwork.style.transform = `translate3d(0, ${scrollY * -0.018}px, 0)`;
-  }
 }
 
 function bindEvents() {
@@ -275,6 +271,8 @@ function bindEvents() {
       statusText.textContent = "Playback could not start";
     });
   });
+
+  const artwork = document.querySelector(".album-art");
 
   artwork.addEventListener("error", () => {
     artwork.style.display = "none";
@@ -300,7 +298,7 @@ function resizeWaveformCanvas() {
 function drawIdleWaveform(context, width, height) {
   context.clearRect(0, 0, width, height);
   context.beginPath();
-  context.strokeStyle = "rgb(194, 192, 186)";
+  context.strokeStyle = "rgb(143, 217, 210)";
   context.lineWidth = 1;
 
   for (let x = 0; x <= width; x += 8) {
@@ -331,7 +329,7 @@ function drawWaveform() {
   analyser.getByteTimeDomainData(data);
 
   context.beginPath();
-  context.strokeStyle = "rgb(25, 25, 25)";
+  context.strokeStyle = "rgb(143, 217, 210)";
   context.lineWidth = 1;
 
   for (let i = 0; i < data.length; i++) {
