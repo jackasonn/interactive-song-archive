@@ -8,7 +8,7 @@
   <title>Interactive Song Archive — Come What May Tomorrow</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="home-page">
   <main class="site-shell">
     <section class="player" aria-labelledby="song-title">
       <div class="floating-images" aria-hidden="true">
@@ -26,34 +26,28 @@
       </div>
 
       <div class="song-info">
-        <p class="kicker" id="artist-kicker">A song by Jackson Moore.</p>
         <h1 id="song-title">Come What May Tomorrow</h1>
+        <p class="artist-line" id="artist-kicker">by Jackson Moore</p>
         <div class="current-version" aria-live="polite">
           <p class="version-number" id="version-date">01 — DEMO</p>
           <h2 id="version-title">The Original Instrumental</h2>
           <p id="version-description">The first recorded version of the song.</p>
         </div>
-        <button class="play-button" id="play-button" type="button" disabled>
-          <span id="play-label">LOADING</span>
-          <span class="button-indicator" aria-hidden="true"></span>
-        </button>
-        <p class="status" id="status" role="status">Preparing audio…</p>
       </div>
     </section>
 
-    <section class="timeline-section" aria-labelledby="timeline-title">
+    <section class="timeline-section" aria-label="Song playback and timeline">
       <div class="timeline-heading">
-        <div>
-          <p class="eyebrow" id="timeline-title">SONG TIMELINE</p>
-          <p class="timeline-help">Drag or use the arrow keys to move between versions.</p>
+        <div class="play-area">
+          <button class="play-button" id="play-button" type="button" disabled>
+            <span id="play-label">LOADING</span>
+            <span class="button-indicator" aria-hidden="true"></span>
+          </button>
+          <p class="status" id="status" role="status">Preparing audio…</p>
         </div>
         <p class="time-readout"><span id="current-time">0:00</span> / <span id="duration">2:31</span></p>
       </div>
       <div class="timeline-control">
-        <div class="stage-labels" aria-hidden="true">
-          <span>EARLIEST</span>
-          <span>FINAL</span>
-        </div>
         <input class="version-slider" id="version-slider" type="range" min="0" max="4" value="0" step="0.001" aria-label="Move through the song versions">
         <div class="stage-points" id="stage-points"></div>
       </div>
@@ -63,20 +57,10 @@
       <canvas id="waveform" aria-hidden="true"></canvas>
     </section>
 
-    <section class="about-section" id="about" aria-labelledby="about-title">
-      <div class="about-heading">
-        <h2 id="about-title"><em>An archive of progress.</em></h2>
-      </div>
-      <div class="about-copy">
-        <p><em>Come What May Tomorrow</em> is a song about moving forward without knowing exactly what tomorrow will bring. This archive documents the song as it changed from an early instrumental idea into the finished recording.</p>
-        <p>Rather than presenting only the final version, the website lets you move through five stages of the song and hear how its instrumentation, vocals, recordings and mix developed over time. The process itself becomes part of the finished piece.</p>
-        <p>This connects to the theme of <strong>Upkeep</strong>: things we make are rarely finished once and left untouched. They are maintained, revised, repaired and cared for. Here, upkeep becomes musical — each version is a record of attention, change and the small decisions that gradually shape a song.</p>
-      </div>
-    </section>
-
     <footer class="site-footer">
       <span>Interactive song archive | <span class="footer-song-name">Come What May Tomorrow</span></span>
-      <nav class="footer-links" aria-label="Music links">
+      <nav class="footer-links" aria-label="Site and music links">
+        <a href="about.html">ABOUT</a>
         <a href="https://open.spotify.com/artist/7njkLldCadYfsRvvedCBV6" target="_blank" rel="noopener noreferrer">SPOTIFY</a>
         <a href="https://music.apple.com/au/artist/jackson-moore/6800161995" target="_blank" rel="noopener noreferrer">APPLE MUSIC</a>
       </nav>
