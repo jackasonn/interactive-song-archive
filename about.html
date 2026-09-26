@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="About the Interactive Song Archive and the development of Come What May Tomorrow.">
+  <meta name="theme-color" content="#3f3148">
+  <title>About — Interactive Song Archive</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="about-page">
+  <main class="site-shell">
+    <header class="page-header">
+      <a class="back-link" href="index.html">← BACK TO ARCHIVE</a>
+      <span class="page-label">ABOUT</span>
+    </header>
+
+    <section class="about-section" aria-labelledby="about-title">
+      <div class="about-heading">
+        <h1 id="about-title"><em>An archive of progress.</em></h1>
+      </div>
+      <div class="about-copy">
+        <p><em>Come What May Tomorrow</em> is a song about moving forward without knowing exactly what tomorrow will bring. This archive documents the song as it changed from an early instrumental idea into the finished recording.</p>
+        <p>Rather than presenting only the final version, the website lets you move through five stages of the song and hear how its instrumentation, vocals, recordings and mix developed over time. The process itself becomes part of the finished piece.</p>
+        <p>This connects to the theme of <strong>Upkeep</strong>: things we make are rarely finished once and left untouched. They are maintained, revised, repaired and cared for. Here, upkeep becomes musical — each version is a record of attention, change and the small decisions that gradually shape a song.</p>
+      </div>
+    </section>
+
+    <section class="development-log" aria-labelledby="development-title">
+      <div class="development-heading">
+        <p class="eyebrow">PROCESS</p>
+        <h2 id="development-title">Project development log</h2>
+      </div>
+
+      <div class="development-list">
+        <article class="development-entry">
+          <span>01</span><div><h3>Website structure</h3><p>Established the HTML, CSS and JavaScript framework for the interactive song archive, including the player, timeline, waveform, supporting information and footer.</p></div>
+        </article>
+        <article class="development-entry">
+          <span>02</span><div><h3>Song versions</h3><p>Added five audio stages documenting the song's development from the original instrumental through to the final mix.</p></div>
+        </article>
+        <article class="development-entry">
+          <span>03</span><div><h3>Interactive timeline</h3><p>Developed the timeline slider so the audience can move through the song's different stages and hear the progression between versions.</p></div>
+        </article>
+        <article class="development-entry">
+          <span>04</span><div><h3>Audio playback</h3><p>Built Web Audio API playback that blends the five versions according to the timeline position, making the transitions between stages part of the interaction.</p></div>
+        </article>
+        <article class="development-entry">
+          <span>05</span><div><h3>Waveform visualisation</h3><p>Added a live waveform to create a visual relationship between the audio and the interface while the song is playing.</p></div>
+        </article>
+        <article class="development-entry">
+          <span>06</span><div><h3>Floating imagery</h3><p>Added project PNGs around the player and developed randomised, organic movement so the visual elements feel connected to the music without competing with the controls.</p></div>
+        </article>
+        <article class="development-entry">
+          <span>07</span><div><h3>Responsive refinement</h3><p>Adjusted the player, timeline, typography and floating imagery for smaller screens and different viewport sizes.</p></div>
+        </article>
+        <article class="development-entry">
+          <span>08</span><div><h3>Visual refinement</h3><p>Iteratively refined spacing, typography, timeline styling, filled stage points, shadows and page hierarchy to create a more minimal and cohesive interface.</p></div>
+        </article>
+        <article class="development-entry">
+          <span>09</span><div><h3>Audio initialisation fix</h3><p>Removed obsolete movement-function calls left over from an earlier animation system, restoring the audio graph and allowing the playback interface to initialise correctly.</p></div>
+        </article>
+        <article class="development-entry">
+          <span>10</span><div><h3>Archive structure</h3><p>Separated the project explanation and development history from the main player, creating a dedicated About page so the home experience can remain focused on listening and interaction.</p></div>
+        </article>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <span>Interactive song archive | <span class="footer-song-name">Come What May Tomorrow</span></span>
+      <nav class="footer-links" aria-label="Site and music links">
+        <a href="index.html">ARCHIVE</a>
+        <a href="https://open.spotify.com/artist/7njkLldCadYfsRvvedCBV6" target="_blank" rel="noopener noreferrer">SPOTIFY</a>
+        <a href="https://music.apple.com/au/artist/jackson-moore/6800161995" target="_blank" rel="noopener noreferrer">APPLE MUSIC</a>
+      </nav>
+    </footer>
+  </main>
+</body>
+</html>
