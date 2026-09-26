@@ -208,7 +208,7 @@ h2 {
 .version-slider::-webkit-slider-thumb {
   appearance:none;
   position:relative;
-  z-index:2;
+  z-index:4;
   width:15px;
   height:15px;
   margin-top:-6px;
@@ -219,7 +219,7 @@ h2 {
 
 .version-slider::-moz-range-thumb {
   position:relative;
-  z-index:2;
+  z-index:4;
   width:15px;
   height:15px;
   border:1px solid var(--yellow);
@@ -364,7 +364,7 @@ h2 {
 
 .about-page .about-section {
   margin:0;
-  padding:0 0 clamp(110px,14vw,170px);
+  padding:clamp(80px,10vw,140px) 0 clamp(110px,14vw,170px);
   display:grid;
   grid-template-columns:minmax(220px,.7fr) minmax(320px,1.3fr);
   gap:clamp(40px,8vw,120px);
