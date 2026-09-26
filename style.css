@@ -31,7 +31,8 @@ button:focus-visible,input:focus-visible { outline:2px solid var(--aqua); outlin
 a { color:inherit; }
 
 .site-shell {
-  width:min(var(--content-width),100%);
+  width:100%;
+  max-width:none;
   min-height:100svh;
   margin:0 auto;
   padding:14px var(--side-padding) 20px;
@@ -40,7 +41,7 @@ a { color:inherit; }
   gap:12px;
 }
 
-.home-page .site-shell { overflow:hidden; }
+.home-page .site-shell { overflow:hidden; min-height:calc(100svh + 72px); }
 
 .eyebrow,.kicker,.version-number,.time-readout,.status,.site-footer,.page-label,.back-link {
   margin:0;
@@ -334,7 +335,7 @@ h2 {
 
 /* About page */
 .about-page .site-shell {
-  min-height:100svh;
+  min-height:calc(100svh + 72px);
   overflow:visible;
   gap:0;
 }
@@ -457,7 +458,7 @@ h2 {
     padding-top:18px;
   }
 
-  .home-page .site-shell { overflow:visible; }
+  .home-page .site-shell { overflow:visible; min-height:auto; }
 
   .player {
     grid-template-columns:1fr;
@@ -475,6 +476,8 @@ h2 {
 
   .play-area { flex-wrap:wrap; gap:8px 12px; }
   .time-readout { align-self:center; }
+
+  .about-page .site-shell { min-height:auto; }
 
   .about-page .about-section {
     grid-template-columns:1fr;
