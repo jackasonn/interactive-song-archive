@@ -82,7 +82,7 @@ h1 {
   font-family:"Monument Extended",Helvetica,Arial,sans-serif;
   font-size:clamp(36px,5vw,66px);
   line-height:.96;
-  font-weight:800;
+  font-weight:400;
   letter-spacing:-.045em;
 }
 
@@ -112,7 +112,7 @@ h2 {
   font-family:"Monument Extended",Helvetica,Arial,sans-serif;
   font-size:clamp(17px,1.7vw,22px);
   line-height:1.2;
-  font-weight:800;
+  font-weight:400;
 }
 
 .current-version>p:last-child {
@@ -206,6 +206,8 @@ h2 {
 
 .version-slider::-webkit-slider-thumb {
   appearance:none;
+  position:relative;
+  z-index:2;
   width:15px;
   height:15px;
   margin-top:-6px;
@@ -215,6 +217,8 @@ h2 {
 }
 
 .version-slider::-moz-range-thumb {
+  position:relative;
+  z-index:2;
   width:15px;
   height:15px;
   border:1px solid var(--yellow);
@@ -225,7 +229,7 @@ h2 {
 .stage-points {
   position:absolute;
   inset:0 4px auto;
-  top:9px;
+  top:7px;
   height:8px;
   pointer-events:none;
   display:flex;
@@ -340,7 +344,7 @@ h2 {
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:6px 0 40px;
+  padding:42px 0 40px;
 }
 
 .back-link {
@@ -359,7 +363,7 @@ h2 {
 
 .about-page .about-section {
   margin:0;
-  padding:0 0 clamp(70px,10vw,120px);
+  padding:0 0 clamp(110px,14vw,170px);
   display:grid;
   grid-template-columns:minmax(220px,.7fr) minmax(320px,1.3fr);
   gap:clamp(40px,8vw,120px);
@@ -388,7 +392,7 @@ h2 {
 .about-copy strong { color:var(--pink); font-weight:500; }
 
 .development-log {
-  padding:clamp(40px,6vw,72px) 0;
+  padding:clamp(70px,9vw,110px) 0;
   border-top:1px solid rgba(245,231,168,.2);
 }
 
@@ -426,7 +430,7 @@ h2 {
   font-family:"Monument Extended",Helvetica,Arial,sans-serif;
   font-size:12px;
   line-height:1.25;
-  font-weight:800;
+  font-weight:400;
 }
 
 .development-entry p {
