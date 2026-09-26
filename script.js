@@ -45,9 +45,7 @@ function applySongConfig() {
   document.querySelector('meta[name="theme-color"]').content = song.colours.purple;
 
   document.getElementById("song-title").textContent = song.title;
-  document.getElementById("artist-kicker").textContent = `A song by ${song.artist}.`;
-  document.getElementById("about-title").innerHTML = `<em>${song.aboutHeading}</em>`;
-  document.querySelector(".about-copy").innerHTML = song.aboutParagraphs.map((paragraph) => `<p>${paragraph}</p>`).join("");
+  document.getElementById("artist-kicker").textContent = `by ${song.artist}`;
   document.querySelector(".album-art").src = song.albumArt;
   document.querySelector(".album-art").alt = `Album artwork for ${song.title}`;
   document.querySelector(".footer-song-name").textContent = song.title;
